@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/tsuz/go-pine/pine"
+	"github.com/yiplee/go-pine/pine"
 )
 
 type testCancelMystrat struct{}

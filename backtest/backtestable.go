@@ -3,7 +3,7 @@ package backtest
 import (
 	"time"
 
-	"github.com/tsuz/go-pine/pine"
+	"github.com/yiplee/go-pine/pine"
 )
 
 type BackTestable interface {

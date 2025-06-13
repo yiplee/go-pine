@@ -1,4 +1,4 @@
-module github.com/tsuz/go-pine
+module github.com/yiplee/go-pine
 
 go 1.20
 

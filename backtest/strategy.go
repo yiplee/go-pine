@@ -1,7 +1,7 @@
 package backtest
 
 import (
-	"github.com/tsuz/go-pine/pine"
+	"github.com/yiplee/go-pine/pine"
 )
 
 type Strategy interface {

@@ -8,7 +8,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/tsuz/go-pine/pine"
+	"github.com/yiplee/go-pine/pine"
 )
 
 type mystrat struct{}
