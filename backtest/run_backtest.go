@@ -8,7 +8,7 @@ import (
 // Runbacktest starts a backtest
 func RunBacktest(series pine.OHLCVSeries, b BackTestable) (*BacktestResult, error) {
 	strategy := NewStrategy()
-	states := map[string]interface{}{}
+	states := map[string]any{}
 
 	series.GoToFirst()
 

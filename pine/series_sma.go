@@ -102,7 +102,7 @@ func SMA(p ValueSeries, l int64) ValueSeries {
 var cache map[string]ValueSeries = make(map[string]ValueSeries)
 
 func getCache(key string) ValueSeries {
-	return cache[key]
+	return nil
 }
 
 func setCache(key string, v ValueSeries) {
