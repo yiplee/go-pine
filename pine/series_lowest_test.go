@@ -65,15 +65,15 @@ func TestSeriesLowestIteration(t *testing.T) {
 	}{
 		{
 			lookback: 1,
-			vals:     []float64{13, 15, 11, 19, 21},
+			vals:     []float64{0, 13, 15, 11, 19},
 		},
 		{
 			lookback: 2,
-			vals:     []float64{0, 13, 11, 11, 19},
+			vals:     []float64{0, 0, 13, 11, 11},
 		},
 		{
 			lookback: 3,
-			vals:     []float64{0, 0, 11, 11, 11},
+			vals:     []float64{0, 0, 0, 11, 11},
 		},
 	}
 

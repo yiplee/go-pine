@@ -65,21 +65,20 @@ func TestSeriesHighestIteration(t *testing.T) {
 	}{
 		{
 			lookback: 1,
-			vals:     []float64{13, 15, 11, 19, 21},
+			vals:     []float64{0, 13, 15, 11, 19},
 		},
 		{
 			lookback: 2,
-			vals:     []float64{0, 15, 15, 19, 21},
+			vals:     []float64{0, 0, 15, 15, 19},
 		},
 		{
 			lookback: 3,
-			vals:     []float64{0, 0, 15, 19, 21},
+			vals:     []float64{0, 0, 0, 15, 19},
 		},
 	}
 
 	for j := 0; j <= 3; j++ {
 		series.Next()
-		t.Logf("current close: %f", series.Current().C)
 
 		for i, v := range testTable {
 			prop := OHLCVAttr(series, OHLCPropClose)
