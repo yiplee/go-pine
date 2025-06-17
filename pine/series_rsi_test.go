@@ -82,7 +82,7 @@ func TestSeriesRSIIteration5(t *testing.T) {
 	series.Next()
 	series.Next()
 
-	testTable := []float64{52.94117647058823, 77.14285714285714}
+	testTable := []float64{80, 85.71428571428571}
 
 	for i, v := range testTable {
 		series.Next()
@@ -93,7 +93,7 @@ func TestSeriesRSIIteration5(t *testing.T) {
 			t.Errorf("Expected to be non nil but got nil at idx: %d", i)
 		}
 		if *rsi.Val() != v {
-			t.Errorf("Expected %+v but got %+v", v, *rsi.Val())
+			t.Errorf("Expected %+v but got %+v at idx: %d", v, *rsi.Val(), i)
 		}
 	}
 }

@@ -30,17 +30,17 @@ func Lowest(p ValueSeries, l int) ValueSeries {
 }
 
 func getLowestValue(value *Value, l int) *float64 {
-	var lowest *float64
-	for i := 0; i < l; i++ {
+	lowest := value.v
+	for range l - 1 {
 		value = value.prev
 		if value == nil {
 			return nil
 		}
 
-		if lowest == nil || value.v < *lowest {
-			lowest = &value.v
+		if value.v < lowest {
+			lowest = value.v
 		}
 	}
 
-	return lowest
+	return &lowest
 }

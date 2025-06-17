@@ -31,16 +31,16 @@ func Highest(p ValueSeries, l int) ValueSeries {
 
 // get the highest value of the previous l values
 func getHighestValue(value *Value, l int) *float64 {
-	var highest *float64
-	for i := 0; i < l; i++ {
+	highest := value.v
+	for range l - 1 {
 		value = value.prev
 		if value == nil {
 			return nil
 		}
 
-		if highest == nil || value.v > *highest {
-			highest = &value.v
+		if value.v > highest {
+			highest = value.v
 		}
 	}
-	return highest
+	return &highest
 }

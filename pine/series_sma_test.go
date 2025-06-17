@@ -95,6 +95,9 @@ func TestSeriesSMAIteration3(t *testing.T) {
 		if v.isNil && sma.Val() != nil {
 			t.Error("expected to be nil but got non nil")
 		}
+		if !v.isNil && sma.Val() == nil {
+			t.Errorf("expected to be non nil but got nil for lookback %+v", v.lookback)
+		}
 		if !v.isNil && *sma.Val() != v.exp {
 			t.Errorf("Expected to get %+v but got %+v for lookback %+v", v.exp, *sma.Val(), v.lookback)
 		}
@@ -131,7 +134,7 @@ func TestSeriesSMAIteration4(t *testing.T) {
 	series.Next()
 
 	testTable := []struct {
-		lookback int
+		lookback int64
 		exp      float64
 	}{
 		{
@@ -155,7 +158,7 @@ func TestSeriesSMAIteration4(t *testing.T) {
 	for i, v := range testTable {
 		prop := OHLCVAttr(series, OHLCPropClose)
 
-		sma := SMA(prop, int64(v.lookback))
+		sma := SMA(prop, v.lookback)
 		if sma == nil {
 			t.Errorf("Expected to be non nil but got nil at idx: %d", i)
 		}
@@ -197,7 +200,7 @@ func TestSeriesSMANested(t *testing.T) {
 		prop := OHLCVAttr(series, OHLCPropClose)
 
 		sma := SMA(prop, 2)
-		sma2 := SMA(sma, int64(2))
+		sma2 := SMA(sma, 2)
 		if *sma2.Val() != v {
 			t.Errorf("expectd %+v but got %+v", v, *sma2.Val())
 		}
@@ -232,7 +235,7 @@ func TestSeriesSMANotEnoughData(t *testing.T) {
 	series.Next()
 
 	testTable := []struct {
-		lookback int
+		lookback int64
 		exp      *float64
 	}{
 		{
@@ -248,7 +251,7 @@ func TestSeriesSMANotEnoughData(t *testing.T) {
 	for i, v := range testTable {
 		prop := OHLCVAttr(series, OHLCPropClose)
 
-		sma := SMA(prop, int64(v.lookback))
+		sma := SMA(prop, v.lookback)
 		if sma == nil {
 			t.Errorf("Expected to be non nil but got nil at idx: %d", i)
 		}

@@ -65,15 +65,15 @@ func TestSeriesHighestIteration(t *testing.T) {
 	}{
 		{
 			lookback: 1,
-			vals:     []float64{0, 13, 15, 11, 19},
+			vals:     []float64{13, 15, 11, 19, 21},
 		},
 		{
 			lookback: 2,
-			vals:     []float64{0, 0, 15, 15, 19},
+			vals:     []float64{0, 15, 15, 19, 21},
 		},
 		{
 			lookback: 3,
-			vals:     []float64{0, 0, 0, 15, 19},
+			vals:     []float64{0, 0, 15, 19, 21},
 		},
 	}
 

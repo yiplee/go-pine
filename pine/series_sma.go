@@ -1,9 +1,5 @@
 package pine
 
-import (
-	"fmt"
-)
-
 type smaCalcItem struct {
 	valuetot float64
 	total    int64
@@ -12,99 +8,37 @@ type smaCalcItem struct {
 
 // SMA generates a ValueSeries of simple moving averages
 func SMA(p ValueSeries, l int64) ValueSeries {
-	key := fmt.Sprintf("sma:%s:%d", p.ID(), l)
-	sma := getCache(key)
-	if sma == nil {
-		sma = NewValueSeries()
-	}
-	if p == nil || p.GetCurrent() == nil {
+	sma := NewValueSeries()
+	stop := p.GetCurrent()
+	if stop == nil {
 		return sma
 	}
 
-	// current available value
-	stop := p.GetCurrent()
-	// where we left off last time
-	val := sma.GetLast()
-
-	var f *Value
-	// if we have not generated any SMAs yet
-	if val == nil {
-		f = p.GetFirst()
-	} else {
-
-		// time has not advanced. return cache
-		if val.t.Equal(stop.t) {
-			return sma
+	value := p.GetFirst()
+	for value != nil {
+		if smaValue := getSMAValue(value, l); smaValue != nil {
+			sma.Set(value.t, *smaValue)
 		}
 
-		// value exists, find where we need to start off
-		v := p.Get(val.t)
-		if v == nil {
-			f = p.GetFirst()
-		} else {
-			for i := 0; i < int(l)-1; i++ {
-				if v.prev == nil {
-					break
-				}
-				v = v.prev
-			}
-			f = v
-		}
-	}
-
-	// generate from the beginning
-	calcs := make(map[int64]smaCalcItem)
-	for {
-		if f == nil {
+		if value.t.Equal(stop.t) {
 			break
 		}
-		calcs[f.t.Unix()] = smaCalcItem{}
-		toUpdate := make(map[int64]smaCalcItem)
-		for k, v := range calcs {
 
-			var nvt float64
-			if f == nil {
-				nvt = v.valuetot
-			} else {
-				nvt = v.valuetot + f.v
-			}
-			toUpdate[k] = smaCalcItem{
-				valuetot: nvt,
-				seeked:   v.seeked + 1,
-				total:    v.total + 1,
-			}
-		}
-
-		for k := range toUpdate {
-			calcs[k] = toUpdate[k]
-			// done seeking lookback times
-			if toUpdate[k].seeked == l {
-				if toUpdate[k].total > 0 {
-					v := toUpdate[k].valuetot / float64(toUpdate[k].total)
-					sma.Set(f.t, v)
-				}
-				delete(calcs, k)
-			}
-		}
-		if f.t.Equal(stop.t) {
-			break
-		}
-		f = f.next
+		value = value.next
 	}
-
-	setCache(key, sma)
-
 	sma.SetCurrent(stop.t)
-
 	return sma
 }
 
-var cache map[string]ValueSeries = make(map[string]ValueSeries)
+func getSMAValue(value *Value, l int64) *float64 {
+	sum := value.v
+	for range l - 1 {
+		value = value.prev
+		if value == nil {
+			return nil
+		}
 
-func getCache(key string) ValueSeries {
-	return nil
-}
-
-func setCache(key string, v ValueSeries) {
-	cache[key] = v
+		sum += value.v
+	}
+	return NewFloat64(sum / float64(l))
 }
