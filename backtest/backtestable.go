@@ -3,6 +3,7 @@ package backtest
 import (
 	"time"
 
+	"github.com/shopspring/decimal"
 	"github.com/yiplee/go-pine/pine"
 )
 
@@ -12,7 +13,7 @@ type BackTestable interface {
 
 type BacktestResult struct {
 	ClosedOrd         []Position
-	NetProfit         float64
+	NetProfit         decimal.Decimal
 	PercentProfitable float64
 	ProfitableTrades  int64
 	TotalClosedTrades int64
@@ -45,29 +46,30 @@ const (
 )
 
 type Position struct {
-	EntryPx   float64
-	ExitPx    float64
+	Qty       decimal.Decimal
+	EntryPx   decimal.Decimal
+	ExitPx    decimal.Decimal
 	EntryTime time.Time
 	ExitTime  time.Time
 	EntrySide Side
 	OrdID     string
 }
 
-func (p Position) Profit() float64 {
+func (p Position) Profit() decimal.Decimal {
 	switch p.EntrySide {
 	case Long:
-		return p.ExitPx / p.EntryPx
+		return p.ExitPx.Sub(p.EntryPx).Mul(p.Qty)
 	case Short:
-		return p.EntryPx / p.ExitPx
+		return p.EntryPx.Sub(p.ExitPx).Mul(p.Qty)
 	}
-	return 0
+	return decimal.Zero
 }
 
 func (b *BacktestResult) CalculateNetProfit() {
-	start := 1.0
+	start := decimal.NewFromFloat(0)
 	for _, v := range b.ClosedOrd {
 		p := v.Profit()
-		start = start * p
+		start = start.Add(p)
 	}
 	b.NetProfit = start
 }

@@ -47,6 +47,6 @@ func ExampleBackTestable() {
 
 	res, _ := RunBacktest(series, b)
 
-	log.Printf("TotalClosedTrades %d, PercentProfitable: %.03f, NetProfit: %.03f", res.TotalClosedTrades, res.PercentProfitable, res.NetProfit)
+	log.Printf("TotalClosedTrades %d, PercentProfitable: %.03f, NetProfit: %s", res.TotalClosedTrades, res.PercentProfitable, res.NetProfit)
 
 }

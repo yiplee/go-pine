@@ -1,6 +1,9 @@
 package backtest
 
 import (
+	"fmt"
+
+	"github.com/shopspring/decimal"
 	"github.com/yiplee/go-pine/pine"
 )
 
@@ -70,6 +73,15 @@ func (s *strategy) setEntryExit(ordID string) {
 }
 
 func (s *strategy) Entry(ordID string, opts EntryOpts) error {
+	qty, err := decimal.NewFromString(opts.Qty)
+	if err != nil {
+		return err
+	}
+
+	if !qty.IsPositive() {
+		return fmt.Errorf("quantity is not positive")
+	}
+
 	s.setEntryOrder(ordID, opts)
 	return nil
 }
@@ -79,7 +91,7 @@ func (s *strategy) completePosition(p Position) {
 	s.res.TotalClosedTrades++
 
 	prof := p.Profit()
-	if prof > 1 {
+	if prof.IsPositive() {
 		s.res.ProfitableTrades++
 		s.res.PercentProfitable = float64(s.res.ProfitableTrades) / float64(s.res.TotalClosedTrades)
 	}

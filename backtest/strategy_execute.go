@@ -1,6 +1,7 @@
 package backtest
 
 import (
+	"github.com/shopspring/decimal"
 	"github.com/yiplee/go-pine/pine"
 )
 
@@ -35,7 +36,8 @@ func (s *strategy) Execute(ohlcv pine.OHLCV) error {
 		}
 
 		pos := Position{
-			EntryPx:   entryPx,
+			Qty:       decimal.RequireFromString(v.Qty),
+			EntryPx:   decimal.NewFromFloat(entryPx),
 			EntryTime: ohlcv.S,
 			EntrySide: v.Side,
 			OrdID:     v.OrdID,
@@ -53,7 +55,7 @@ func (s *strategy) Execute(ohlcv pine.OHLCV) error {
 	for id := range s.ordExit {
 		p, found := s.findPos(id)
 		if found {
-			p.ExitPx = ohlcv.O
+			p.ExitPx = decimal.NewFromFloat(ohlcv.O)
 			p.ExitTime = ohlcv.S
 			s.completePosition(p)
 			s.deleteOpenPos(id)
