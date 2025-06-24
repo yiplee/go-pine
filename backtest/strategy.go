@@ -79,7 +79,7 @@ func (s *strategy) completePosition(p Position) {
 	s.res.TotalClosedTrades++
 
 	prof := p.Profit()
-	if prof > 0 {
+	if prof > 1 {
 		s.res.ProfitableTrades++
 		s.res.PercentProfitable = float64(s.res.ProfitableTrades) / float64(s.res.TotalClosedTrades)
 	}
