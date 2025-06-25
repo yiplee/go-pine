@@ -93,8 +93,9 @@ func (s *strategy) completePosition(p Position) {
 	prof := p.Profit()
 	if prof.IsPositive() {
 		s.res.ProfitableTrades++
-		s.res.PercentProfitable = float64(s.res.ProfitableTrades) / float64(s.res.TotalClosedTrades)
 	}
+
+	s.res.PercentProfitable = float64(s.res.ProfitableTrades) / float64(s.res.TotalClosedTrades)
 }
 
 func (s *strategy) Exit(ordID string) error {
