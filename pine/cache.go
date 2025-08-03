@@ -7,5 +7,4 @@ func getCache(key string) ValueSeries {
 }
 
 func setCache(key string, v ValueSeries) {
-	cache[key] = v
 }
