@@ -23,6 +23,9 @@ type OHLCVBaseSeries interface {
 	// Get gets the item by time in value series
 	Get(time.Time) *OHLCV
 
+	// GetIndex gets the item by index in value series
+	GetIndex(int) *OHLCV
+
 	// GetFirst returns first value
 	GetFirst() *OHLCV
 
@@ -108,6 +111,18 @@ func (s *ohlcvBaseSeries) Get(t time.Time) *OHLCV {
 
 func (s *ohlcvBaseSeries) getValue(t int64) *OHLCV {
 	return s.vals[t]
+}
+
+func (s *ohlcvBaseSeries) GetIndex(idx int) *OHLCV {
+	v := s.cur
+	for range idx {
+		if v == nil {
+			return nil
+		}
+
+		v = v.prev
+	}
+	return v
 }
 
 func (s *ohlcvBaseSeries) GetFirst() *OHLCV {
