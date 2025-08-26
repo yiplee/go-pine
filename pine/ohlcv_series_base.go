@@ -20,6 +20,9 @@ type OHLCVBaseSeries interface {
 	// Current returns current ohlcv
 	Current() *OHLCV
 
+	// SetCurrent sets the current value
+	SetCurrent(time.Time) *OHLCV
+
 	// Get gets the item by time in value series
 	Get(time.Time) *OHLCV
 
@@ -102,6 +105,15 @@ func (s *ohlcvBaseSeries) Len() int {
 }
 
 func (s *ohlcvBaseSeries) Current() *OHLCV {
+	return s.cur
+}
+
+func (s *ohlcvBaseSeries) SetCurrent(t time.Time) *OHLCV {
+	cur := s.Get(t)
+	if cur == nil {
+		return nil
+	}
+	s.cur = cur
 	return s.cur
 }
 
