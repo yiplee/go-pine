@@ -44,3 +44,12 @@ func getHighestValue(value *Value, l int) *float64 {
 	}
 	return &highest
 }
+
+func GetHighestValue(p ValueSeries, l int) *float64 {
+	cur := p.GetCurrent()
+	if cur == nil {
+		return nil
+	}
+
+	return getHighestValue(cur, l)
+}

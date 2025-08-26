@@ -44,3 +44,12 @@ func getLowestValue(value *Value, l int) *float64 {
 
 	return &lowest
 }
+
+func GetLowestValue(p ValueSeries, l int) *float64 {
+	cur := p.GetCurrent()
+	if cur == nil {
+		return nil
+	}
+
+	return getLowestValue(cur, l)
+}
