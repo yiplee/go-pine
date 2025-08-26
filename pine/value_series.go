@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/twinj/uuid"
+	"github.com/google/uuid"
 )
 
 type ValueSeries interface {
@@ -53,7 +53,7 @@ type Value struct {
 
 // NewValueSeries creates an empty series that conforms to ValueSeries
 func NewValueSeries() ValueSeries {
-	u := uuid.NewV4()
+	u := uuid.New()
 	v := &valueSeries{
 		id:      u.String(),
 		max:     1000, // default maximum items

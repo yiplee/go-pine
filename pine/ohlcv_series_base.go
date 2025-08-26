@@ -3,8 +3,8 @@ package pine
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
-	"github.com/twinj/uuid"
 )
 
 // OHLCVBaseSeries represents a series of OHLCV type (i.e. open, high, low, close, volume)
@@ -45,7 +45,7 @@ type OHLCVBaseSeries interface {
 }
 
 func NewOHLCVBaseSeries() OHLCVBaseSeries {
-	u := uuid.NewV4()
+	u := uuid.New()
 	s := &ohlcvBaseSeries{
 		id:   u.String(),
 		max:  1000, // default maximum items
